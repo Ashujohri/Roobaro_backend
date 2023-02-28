@@ -2,14 +2,14 @@ var express = require("express");
 var router = express.Router();
 var pool = require("../dbconfig/pool");
 
-router.get("/departmentDisplay", function (req, res, next) {
+router.get("/locationListView", function (req, res, next) {
   try {
-    const qry = `select * from department;`;
+    const qry = `select * from location;`;
     pool.query(qry, function (error, result) {
       if (error) {
         return res
           .status(400)
-          .json({ status: false, message: "Bad Request", error });
+          .json({ status: false, message: "Bad request", error });
       } else {
         return res
           .status(200)

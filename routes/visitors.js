@@ -8,7 +8,6 @@ router.get("/display", function (req, res, next) {
   try {
     pool.query("select * from visitors;", function (error, result) {
       if (error) {
-        console.log("error in visitor", error);
         return res
           .status(400)
           .json({ status: false, message: "Bad request", error });
