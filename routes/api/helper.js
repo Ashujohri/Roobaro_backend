@@ -14,9 +14,7 @@ function queryUpdateData(obj) {
 }
 
 function queryPostData(obj) {
-  console.log("obj", obj);
   const keys = Object.keys(obj).join();
-  console.log("keys", keys);
   var values = Object.values(obj);
   values = values.map((item) => `'${item}'`);
   return { keys, values };
