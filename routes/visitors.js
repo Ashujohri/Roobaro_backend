@@ -3,10 +3,13 @@ var router = express.Router();
 var pool = require("../dbconfig/pool");
 const { queryPostData } = require("./api/helper");
 const multer = require("./api/multer");
+const moment = require("moment");
 
-router.get("/display", function (req, res, next) {
+router.get("/display/:date", function (req, res, next) {
   try {
-    pool.query("select * from visitors;", function (error, result) {
+    const currDate = moment(req.params.date).format("YYYY-MM-DD");
+    const qry = `select V.*, D.*, L.* from visitors as V join department as D on V.department_id=D.department_id join location as L on V.location_id=L.location_id where V.created_date_time like'${currDate}%';`;
+    pool.query(qry, function (error, result) {
       if (error) {
         return res
           .status(400)
