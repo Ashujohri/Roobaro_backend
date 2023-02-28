@@ -9,6 +9,7 @@ const config = require("../nodemon.json");
 
 // sign-in api
 router.post("/login/signin", function (req, res, next) {
+  // console.log("LOGIN BODY>>>>>", req.body);
   var agent = useragent.parse(req.headers["user-agent"]);
   let userDeviceId = agent.toString();
   const qry = `select * from admin where admin_email='${req.body.admin_email}'`;
@@ -17,7 +18,7 @@ router.post("/login/signin", function (req, res, next) {
       return res
         .status(500)
         .json({ status: false, error, data: "No record found" });
-    } else if (data.rows) {
+    } else if (data.rows.length != 0) {
       if (await bcrypt.compare(req.body.password, data.rows[0].password)) {
         let { password, ...restData } = data.rows[0];
 
