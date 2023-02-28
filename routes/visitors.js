@@ -23,18 +23,15 @@ router.get("/display", function (req, res, next) {
 
 router.post("/member/add", multer.any(), function (req, res, next) {
   const { keys, values } = queryPostData(req.body);
-  console.log("keys in brouter", keys);
-  console.log("values in brouter", values);
   const qry = `insert into visitors(${keys}) values (${values})`;
-  pool.query(qry, function (error) {
-    console.log("qry", qry);
+  pool.query(qry, function (error, result) {
     if (error) {
       console.log("error", error);
       return res.status(400).json({ status: false, message: error.message });
     } else {
       return res
         .status(200)
-        .json({ status: true, message: "Record submitted" });
+        .json({ status: true, message: "Record submitted", result });
     }
   });
 });
