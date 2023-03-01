@@ -29,6 +29,7 @@ router.get("/display/:date", function (req, res, next) {
 
 router.post("/member/add", multer.any(), function (req, res, next) {
   try {
+    req.body.picture = req.files[0].filename;
     const { keys, values } = queryPostData(req.body);
     const qry = `insert into visitors(${keys}) values (${values})`;
     pool.query(qry, function (error, result) {
