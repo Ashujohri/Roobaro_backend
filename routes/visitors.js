@@ -4,7 +4,7 @@ var pool = require("../dbconfig/pool");
 const { queryPostData } = require("./api/helper");
 const multer = require("./api/multer");
 const moment = require("moment");
-const request = require('request');
+const request = require("request");
 
 router.get("/display/:date", function (req, res, next) {
   try {
@@ -28,9 +28,10 @@ router.get("/display/:date", function (req, res, next) {
   }
 });
 
-router.post("/member/add", multer.any(), function (req, res, next) {
+router.put("/member/add", multer.any(), function (req, res, next) {
   try {
-    req.body.picture = req.files[0].filename;
+    // req.body.picture = req.files[0].filename;
+    console.log("req body in add visitors", req.body);
     const { keys, values } = queryPostData(req.body);
     const qry = `insert into visitors(${keys}) values (${values})`;
     pool.query(qry, function (error, result) {
