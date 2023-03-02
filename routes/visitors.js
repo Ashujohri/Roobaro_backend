@@ -4,6 +4,7 @@ var pool = require("../dbconfig/pool");
 const { queryPostData } = require("./api/helper");
 const multer = require("./api/multer");
 const moment = require("moment");
+const request = require('request');
 
 router.get("/display/:date", function (req, res, next) {
   try {
@@ -40,6 +41,34 @@ router.post("/member/add", multer.any(), function (req, res, next) {
         return res
           .status(200)
           .json({ status: true, message: "Record submitted", result });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+});
+
+router.post("/sendOTP", function (req, res) {
+  try {
+    // console.log("Request body", req.body);
+    var options = {
+      method: "GET",
+      url: `https://api.msg91.com/api/v5/otp?template_id=6361f763d6fc0503f83a2632&mobile=${req.body.mobile}&authkey=383945Aj0ZM8eNX635238f7P1&otp=${req.body.otp}`,
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+    };
+    request(options, function (error, result, body) {
+      if (error) {
+        return res.status(400).json({ status: false, msg: error });
+      } else {
+        return res.status(200).json({
+          status: true,
+          message: "OTP Has been sent",
+          result,
+          otp: req.body.otp,
+          mobile: req.body.mobile,
+        });
       }
     });
   } catch (error) {
