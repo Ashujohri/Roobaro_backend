@@ -53,4 +53,25 @@ router.post("/login/signin", function (req, res, next) {
   }
 });
 
+router.put("/updateProfile", function (req, res, next) {
+  try {
+    // req.body.picture = req.files[0].filename;
+    console.log("req body in update profile", req.body);
+    // const { keys, values } = queryPostData(req.body);
+    const qry = `update admin set admin_picture='${req.body.admin_picture}' where admin_id='${req.body.admin_id}'`;
+    pool.query(qry, function (error, result) {
+      if (error) {
+        console.log("error", error);
+        return res.status(400).json({ status: false, message: error.message });
+      } else {
+        return res
+          .status(200)
+          .json({ status: true, message: "Profile Updated Successfully", result });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({ error });
+  }
+});
+
 module.exports = router;
