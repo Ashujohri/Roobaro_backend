@@ -26,10 +26,16 @@ router.put("/fieldMember/add", function (req, res, next) {
 
 router.get("/displayFieldVisitors/:date", function (req, res, next) {
   try {
+    // console.log("BODYYYY OF FIELD VISITORS>>>>>>>>>>>", req.params);
     // const currDate = moment(req.params.date).format("YYYY-MM-DD");
-    const qry = `select FV.*, D.*, L.* from fieldvisitor as FV join department as D on FV.field_visitor_department_id=D.department_id join location as L on FV.field_visitor_location_id=L.location_id where FV.created_date_time like'${req.params.date}%';`;
+    if (req.params.date === "undefined") {
+      var qry = `select FV.*, D.*, L.* from fieldvisitor as FV join department as D on FV.field_visitor_department_id=D.department_id join location as L on FV.field_visitor_location_id=L.location_id;`;
+    } else {
+      var qry = `select FV.*, D.*, L.* from fieldvisitor as FV join department as D on FV.field_visitor_department_id=D.department_id join location as L on FV.field_visitor_location_id=L.location_id where FV.created_date_time like'${req.params.date}%';`;
+    }
     pool.query(qry, function (error, result) {
       if (error) {
+        console.log("ERROR IN DISPLAY FIELD VISITOR", error);
         return res
           .status(400)
           .json({ status: false, message: "Bad request", error });
@@ -42,6 +48,7 @@ router.get("/displayFieldVisitors/:date", function (req, res, next) {
       }
     });
   } catch (error) {
+    console.log("error>>>>>>>>>>>>", error);
     return res.status(500).json({ error });
   }
 });
