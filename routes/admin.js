@@ -53,6 +53,29 @@ router.post("/login/signin", function (req, res, next) {
   }
 });
 
+router.post("/updatePass/:admin_email/:admin_id", async (req, res, next) => {
+  try {
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
+    const qry = `update admin set password='${hashPassword}' where admin_email='${req.params.admin_email}' and admin_id='${req.params.admin_id}'`;
+    pool.query(qry, function (error, result) {
+      if (error) {
+        console.log("error", error);
+        return res
+          .status(400)
+          .json({ status: false, message: "Bad request", error });
+      } else {
+        return res.status(200).json({
+          status: true,
+          message: "Updated info. successfully",
+          result: result.rowCount,
+        });
+        }
+        });
+         } catch (error) {
+    return res.status(500).json({ error });
+  }
+  });
+
 router.put("/updateProfile", function (req, res, next) {
   try {
     // req.body.picture = req.files[0].filename;
