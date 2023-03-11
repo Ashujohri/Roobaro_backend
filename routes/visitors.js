@@ -51,7 +51,7 @@ router.put("/member/add", multer.any(), function (req, res, next) {
 
 router.post("/sendOTP", function (req, res) {
   try {
-    // console.log("Request body", req.body);
+    console.log("Request body", req.body);
     var options = {
       method: "GET",
       url: `https://api.msg91.com/api/v5/otp?template_id=6361f763d6fc0503f83a2632&mobile=${req.body.mobile}&authkey=383945Aj0ZM8eNX635238f7P1&otp=${req.body.otp}`,
