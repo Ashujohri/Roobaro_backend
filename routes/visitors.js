@@ -21,6 +21,7 @@ router.get("/display/:date", function (req, res, next) {
           .status(400)
           .json({ status: false, message: "Bad request", error });
       } else {
+        console.log("result", result);
         return res.status(200).json({
           status: true,
           message: "result found",
@@ -59,10 +60,11 @@ router.post("/sendOTP", function (req, res) {
     console.log("Request body", req.body);
     var options = {
       method: "GET",
-      url: `https://api.msg91.com/api/v5/otp?template_id=6361f763d6fc0503f83a2632&mobile=${req.body.mobile}&authkey=383945Aj0ZM8eNX635238f7P1&otp=${req.body.otp}`,
+      url: `http://sms.smsindori.com/http-api.php?username=Plus91labs&password=12345&senderid=PLSLMS&route=06&number=${req.body.mobile}&message=PLSLMS:Dear%20customer,%20use%20this%20OTP%20${req.body.otp}%20to%20log%20in%20to%20your%20TrueSales%20account.%20This%20OTP%20will%20expire%20in%2015%20minutes&templateid=1007379278963251418`,
       headers: {
         "Cache-Control": "no-cache",
       },
+      // url: `https://api.msg91.com/api/v5/otp?template_id=6361f763d6fc0503f83a2632&mobile=${req.body.mobile}&authkey=383945Aj0ZM8eNX635238f7P1&otp=${req.body.otp}`,
     };
     request(options, function (error, result, body) {
       if (error) {

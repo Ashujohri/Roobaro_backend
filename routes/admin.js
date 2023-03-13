@@ -69,12 +69,12 @@ router.post("/updatePass/:admin_email/:admin_id", async (req, res, next) => {
           message: "Updated info. successfully",
           result: result.rowCount,
         });
-        }
-        });
-         } catch (error) {
+      }
+    });
+  } catch (error) {
     return res.status(500).json({ error });
   }
-  });
+});
 
 router.put("/updateProfile", function (req, res, next) {
   try {
@@ -89,7 +89,11 @@ router.put("/updateProfile", function (req, res, next) {
       } else {
         return res
           .status(200)
-          .json({ status: true, message: "Profile Updated Successfully", result });
+          .json({
+            status: true,
+            message: "Profile Updated Successfully",
+            result,
+          });
       }
     });
   } catch (error) {
