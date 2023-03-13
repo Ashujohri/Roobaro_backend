@@ -35,7 +35,6 @@ router.get("/displayFieldVisitors/:date", function (req, res, next) {
     }
     pool.query(qry, function (error, result) {
       if (error) {
-        console.log("ERROR IN DISPLAY FIELD VISITOR", error);
         return res
           .status(400)
           .json({ status: false, message: "Bad request", error });
@@ -48,7 +47,6 @@ router.get("/displayFieldVisitors/:date", function (req, res, next) {
       }
     });
   } catch (error) {
-    console.log("error>>>>>>>>>>>>", error);
     return res.status(500).json({ error });
   }
 });
