@@ -10,12 +10,13 @@ router.get("/display/:date", function (req, res, next) {
   try {
     const currDate = moment(req.params.date).format("YYYY-MM-DD");
     if (req.params.date === "undefined") {
-      var qry = `select V.*, D.*, L.*, A.admin_name as AdminName from visitors as V join department as D on V.department_id=D.department_id join location as L on V.location_id=L.location_id join admin as A on V.created_by=A.admin_id;`;
+      var qry = `select V.*, D.*, L.* from visitors as V join department as D on V.department_id=D.department_id join location as L on V.location_id=L.location_id group by V.visitors_id, D.department_id, L.location_id;`;
     } else {
-      var qry = `select V.*, D.*, L.*, A.admin_name as AdminName from visitors as V join department as D on V.department_id=D.department_id join location as L on V.location_id=L.location_id join admin as A on V.created_by=A.admin_id where V.created_date_time like'${currDate}%';`;
+      var qry = `select V.*, D.*, L.* from visitors as V join department as D on V.department_id=D.department_id join location as L on V.location_id=L.location_id where V.created_date_time like'${currDate}%' group by V.visitors_id, D.department_id, L.location_id;`;
     }
     pool.query(qry, function (error, result) {
       if (error) {
+        console.log("error", error);
         return res
           .status(400)
           .json({ status: false, message: "Bad request", error });
